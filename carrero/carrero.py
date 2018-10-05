@@ -1,8 +1,17 @@
+# ---------------------------------------------------------------------------------------
+#
+# carrero.py
+# Author: Fernando Leira
+#
+# ---------------------------------------------------------------------------------------
+
+
 import RPi.GPIO as GPIO
 from picamera import PiCamera
 import time
 import cv2
 
+# Functions for controlling the motors direction
 def move_forward(delay):
 	GPIO.output(pins["motorL_pos"], True)
 	GPIO.output(pins["motorL_neg"], False)
@@ -32,12 +41,13 @@ def move_left(delay):
 	time.sleep(delay)
 
 def stop_motors(delay):
-	GPIO.output(pins["motorL_pos"], False)
-	GPIO.output(pins["motorL_neg"], False)
-	GPIO.output(pins["motorR_pos"], False)
-	GPIO.output(pins["motorR_neg"], False)
-	time.sleep(delay)
+    GPIO.output(pins["motorL_pos"], False)
+    GPIO.output(pins["motorL_neg"], False)
+    GPIO.output(pins["motorR_pos"], False)
+    GPIO.output(pins["motorR_neg"], False)
+    time.sleep(delay)
 
+# Declare pins on the Raspberry PI
 pins = {
 	"motorL_pos": 17,
 	"motorL_neg": 22,
@@ -49,35 +59,38 @@ pins = {
 GPIO.setmode(GPIO.BCM)
 for key in pins.keys():
 	GPIO.setup(pins[key], GPIO.OUT)
-print "Pins on"
+print("Pins on")
 
 camera = PiCamera()
 camera.resolution = (2500, 1900)
 camera.framerate = 15
 camera.brightness = 60
-print "Camera on"
+print("Camera on")
 
 # Start recording
 cv2.namedWindow("Preview")
 camera.start_preview()
 
 key = cv2.waitKey(0)
-while key != 27:
+while key != 27: # ESC
 	# Move Forward
 	if key == 65362:
-		print "Forward"
+		print("Forward")
 		move_forward(1)
+    # Move Backwards
 	elif key == 65364:
-		print "Back"
+		print("Back")
 		move_backwards(1)
+    # Move Left
 	elif key == 65361:
-		print "Left"
+		print("Left")
 		move_left(1)
+    # Move Right
 	elif key == 65363:
-		print "Back"
+		print("Back")
 		move_right(1)
 	else:
-		print key
+		print(key)
 		stop_motors(1)
 		
 	key = cv2.waitKey(0)
