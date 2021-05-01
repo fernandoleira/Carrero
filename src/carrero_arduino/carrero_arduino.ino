@@ -47,7 +47,7 @@ uint8_t rear_left_speed = 255;
 uint8_t rear_right_speed = 255;
 
 // Vehicle Transmissions Positions
-enum vehicle_position { P, R, D };
+enum vehicle_position { P, R, D, DD };
 vehicle_position current_state = P;
 vehicle_position last_state = P;
 
@@ -88,8 +88,7 @@ void setup()
   pinMode(TRIG_L, OUTPUT);
   pinMode(ECHO_L, INPUT);
 
-  setFrontMotorsPositions();
-  setRearMotorsPositions();
+  setMotorsPositions();
 }
 
 void loop()
@@ -97,8 +96,7 @@ void loop()
   // Check if there is a change in position
   if (last_state != current_state)
   {
-    setFrontMotorsPositions();
-    setRearMotorsPositions();
+    setMotorsPositions();
     last_state = current_state;
 
     front_left_speed = 0;
@@ -133,6 +131,8 @@ void handleInput()
     current_state = R;
   else if (Incoming_value == 'D')
     current_state = D;
+  else if (Incoming_value == 'X')
+    current_state = DD;
   else if (Incoming_value == 'f'){
     front_left_speed = 255;
     front_right_speed = 255;
@@ -159,7 +159,7 @@ void handleInput()
   }
 }
 
-void setFrontMotorsPositions()
+void setMotorsPositions()
 {
   // Set new Position State for Front Motors
   switch (current_state)
@@ -169,14 +169,36 @@ void setFrontMotorsPositions()
       in2_f = 0;
       in3_f = 0;
       in4_f = 0;
+      in1_r = 0;
+      in2_r = 0;
+      in3_r = 0;
+      in4_r = 0;
       break;
     case R:
       in1_f = 1;
       in2_f = 0;
       in3_f = 1;
       in4_f = 0;
+      in1_r = 1;
+      in2_r = 0;
+      in3_r = 1;
+      in4_r = 0;
       break;
     case D:
+      in1_f = 0;
+      in2_f = 1;
+      in3_f = 0;
+      in4_f = 1;
+      in1_r = 0;
+      in2_r = 1;
+      in3_r = 0;
+      in4_r = 1;
+      break;
+    case DD:
+      in1_f = 0;
+      in2_f = 1;
+      in3_f = 0;
+      in4_f = 1;
       in1_f = 0;
       in2_f = 1;
       in3_f = 0;
@@ -189,34 +211,6 @@ void setFrontMotorsPositions()
   digitalWrite(IN2_F, in2_f);
   digitalWrite(IN3_F, in3_f);
   digitalWrite(IN4_F, in4_f);
-}
-
-void setRearMotorsPositions()
-{
-  // Set new Position State for Rear Motors
-  switch (current_state)
-  {
-    case P:
-      in1_r = 0;
-      in2_r = 0;
-      in3_r = 0;
-      in4_r = 0;
-      break;
-    case R:
-      in1_r = 1;
-      in2_r = 0;
-      in3_r = 1;
-      in4_r = 0;
-      break;
-    case D:
-      in1_r = 0;
-      in2_r = 1;
-      in3_r = 0;
-      in4_r = 1;
-      break;
-  }
-
-  // Apply changes
   digitalWrite(IN1_R, in1_r);
   digitalWrite(IN2_R, in2_r);
   digitalWrite(IN3_R, in3_r);
