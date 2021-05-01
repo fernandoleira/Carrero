@@ -146,16 +146,16 @@ void handleInput()
     rear_right_speed = 0;
   }
   else if (Incoming_value == 'l'){
-    front_left_speed = 0;
-    front_right_speed = 255;
-    rear_left_speed = 255;
-    rear_right_speed = 0;
-  }
-  else if (Incoming_value == 'r'){
     front_left_speed = 255;
     front_right_speed = 0;
     rear_left_speed = 0;
     rear_right_speed = 255;
+  }
+  else if (Incoming_value == 'r'){
+    front_left_speed = 0;
+    front_right_speed = 255;
+    rear_left_speed = 255;
+    rear_right_speed = 0;
   }
 }
 
