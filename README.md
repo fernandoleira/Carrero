@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/fernandoleira/Carrero">
-    <img src="img/logo.jpg" alt="Logo" width="80" height="80">
+    <img src="img/logo.jpg" alt="Logo">
   </a>
 
   <h3 align="center">v2 Explorator</h3>
